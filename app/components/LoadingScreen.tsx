@@ -26,19 +26,19 @@ export default function LoadingScreen() {
   if (!loading) return null;
 
   return (
-    <div 
+    <div
       className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#A2D0F5] transition-opacity duration-500 ${fade ? 'opacity-0' : 'opacity-100'}`}
       style={{ backgroundImage: 'radial-gradient(#FFFFFF 2.5px, transparent 2.5px), radial-gradient(#FFFFFF 2.5px, transparent 2.5px)', backgroundSize: '50px 50px', backgroundPosition: '0 0, 25px 25px' }}
     >
-       <div className="animate-bounce mb-6 text-7xl drop-shadow-lg">🥣</div>
-       <h1 className="text-white text-4xl font-extrabold font-['Outfit'] drop-shadow-md text-center">
-          Zagrijavam pećnicu...
-       </h1>
-       <div className="mt-6 flex gap-3">
-         <div className="w-4 h-4 bg-white rounded-full animate-bounce shadow-sm" style={{ animationDelay: '0ms' }}></div>
-         <div className="w-4 h-4 bg-white rounded-full animate-bounce shadow-sm" style={{ animationDelay: '150ms' }}></div>
-         <div className="w-4 h-4 bg-white rounded-full animate-bounce shadow-sm" style={{ animationDelay: '300ms' }}></div>
-       </div>
+      <div className="animate-bounce mb-6 text-7xl drop-shadow-lg">🥣</div>
+      <h1 className="text-white text-4xl font-extrabold font-['Outfit'] drop-shadow-md text-center">
+        Zagrijavam rernu...
+      </h1>
+      <div className="mt-6 flex gap-3">
+        <div className="w-4 h-4 bg-white rounded-full animate-bounce shadow-sm" style={{ animationDelay: '0ms' }}></div>
+        <div className="w-4 h-4 bg-white rounded-full animate-bounce shadow-sm" style={{ animationDelay: '150ms' }}></div>
+        <div className="w-4 h-4 bg-white rounded-full animate-bounce shadow-sm" style={{ animationDelay: '300ms' }}></div>
+      </div>
     </div>
   );
 }
