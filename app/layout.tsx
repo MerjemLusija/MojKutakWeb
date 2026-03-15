@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import LoadingScreen from "./components/LoadingScreen";
 import NewsletterForm from "./components/NewsletterForm";
+import Header from "./components/Header";
 
 export const metadata: Metadata = {
   title: "Moj Kutak - Kulinarski Blog & YouTube Kanal",
@@ -21,33 +22,7 @@ export default function RootLayout({
         <LoadingScreen />
 
         {/* ─── STICKY PILL NAVBAR ─── */}
-        <header className="mk-nav">
-          <div className="mk-nav-inner">
-            {/* Left nav links */}
-            <nav className="mk-nav-left">
-              <Link href="/" className="mk-nav-link">Početna</Link>
-              <Link href="/recepti" className="mk-nav-link">Recepti</Link>
-            </nav>
-
-            {/* Centered Logo */}
-            <Link href="/" className="mk-nav-logo">
-              <Image
-                src="/logo2.png"
-                alt="Moj Kutak Logo"
-                width={80}
-                height={80}
-                style={{ objectFit: "contain" }}
-                priority
-              />
-            </Link>
-
-            {/* Right nav links */}
-            <nav className="mk-nav-right">
-              <Link href="#o-meni" className="mk-nav-link">O Meni</Link>
-              <Link href="#trending" className="mk-nav-link">Trending</Link>
-            </nav>
-          </div>
-        </header>
+        <Header />
 
         {/* ─── PAGE CONTENT ─── */}
         {children}

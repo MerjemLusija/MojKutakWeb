@@ -1,0 +1,203 @@
+/* ============================================================
+   Header.module.css — Moj Kutak floating pill navbar
+   ============================================================ */
+
+/* ── Outer wrapper: centers the pill, sticky ── */
+.navWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 12px 20px;
+  position: sticky;
+  top: 16px;
+  z-index: 100;
+  pointer-events: none; /* let clicks pass through wrapper */
+}
+
+/* ── The glassmorphism pill ── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 72px;
+  padding: 0 28px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(110, 185, 220, 0.3);
+  background:
+    radial-gradient(
+        circle,
+        rgba(110, 185, 220, 0.1) 1px,
+        transparent 1px
+      )
+      14px 14px / 14px 14px,
+    rgba(255, 253, 250, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow:
+    0 8px 32px rgba(100, 180, 220, 0.13),
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  position: relative;
+  overflow: visible;
+  pointer-events: all; /* re-enable on pill itself */
+
+  /* mount sheen animation */
+  animation: sheenSweep 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ── Single sheen sweep on mount ── */
+@keyframes sheenSweep {
+  0% {
+    --sheen-x: -100%;
+  }
+  100% {
+    --sheen-x: 200%;
+  }
+}
+
+.pill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 60%
+  );
+  transform: translateX(var(--sheen-x, -100%));
+  animation: sheenMove 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.05s forwards;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 50;
+}
+
+@keyframes sheenMove {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(220%);
+  }
+}
+
+/* ── Link groups (left & right) ── */
+.linkGroup {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* ── Individual nav link ── */
+.navLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #3a5a70;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.navLinkText {
+  position: relative;
+  z-index: 2;
+}
+
+/* Hover color */
+.navLink:hover {
+  color: #1a5f8a;
+}
+
+/* ── Active link ── */
+.navLinkActive {
+  color: #1a5f8a !important;
+}
+
+/* When active, keep the pill bg visible */
+.navLinkActive .navLinkPillBg {
+  transform: scale(1) !important;
+  opacity: 1 !important;
+}
+
+/* ── Spring pill background (injected via JS) ── */
+.navLinkPillBg {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: rgba(110, 185, 220, 0.15);
+  transform: scale(0.65);
+  opacity: 0;
+  transition:
+    transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.25s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Logo wrapper ── */
+.logoWrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  filter: drop-shadow(0 4px 16px rgba(255, 255, 255, 0.9));
+}
+
+/* ── Spinning conic-gradient ring ── */
+.logoRing {
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #6eb9dc,
+    #f5c430,
+    #6eb9dc,
+    #f5c430,
+    #6eb9dc
+  );
+  animation: spinRing 4s linear infinite;
+  opacity: 0.65;
+}
+
+@keyframes spinRing {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Inner white mask over ring ── */
+.logoRingInner {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: rgba(255, 253, 250, 0.96);
+  z-index: 1;
+}
+
+/* ── Logo image on top ── */
+.logoImg {
+  position: relative;
+  z-index: 2;
+  border-radius: 50%;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.logoWrap:hover .logoImg {
+  transform: scale(1.1) rotate(-4deg);
+}
