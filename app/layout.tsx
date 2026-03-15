@@ -1,83 +1,125 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import Image from "next/image";
 import LoadingScreen from "./components/LoadingScreen";
-
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import NewsletterForm from "./components/NewsletterForm";
 
 export const metadata: Metadata = {
-  title: "Moj Kutak - Cute Food Blog",
-  description: "Dobrodošli u Moj Kutak - mjesto za slatke i slane recepte",
+  title: "Moj Kutak - Kulinarski Blog & YouTube Kanal",
+  description:
+    "Dobrodošli u Moj Kutak — mjesto gdje kuhanje postaje radost. Recepti iz srca, puni okusa i ljubavi.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="bs">
       <body>
+        {/* ─── Loading Screen ─── */}
         <LoadingScreen />
-        <nav className="header">
-          {/* Logo */}
-          <Link href="/">
-            <div className="logo-container">
-              <Image 
-                src="/logo2.png" 
-                alt="Moj Kutak Logo" 
-                width={120} 
-                height={120} 
-                style={{ objectFit: 'contain' }}
+
+        {/* ─── STICKY PILL NAVBAR ─── */}
+        <header className="mk-nav">
+          <div className="mk-nav-inner">
+            {/* Left nav links */}
+            <nav className="mk-nav-left">
+              <Link href="/" className="mk-nav-link">Početna</Link>
+              <Link href="/recepti" className="mk-nav-link">Recepti</Link>
+            </nav>
+
+            {/* Centered Logo */}
+            <Link href="/" className="mk-nav-logo">
+              <Image
+                src="/logo2.png"
+                alt="Moj Kutak Logo"
+                width={80}
+                height={80}
+                style={{ objectFit: "contain" }}
                 priority
               />
-            </div>
-          </Link>
+            </Link>
 
-          {/* Links */}
-          <div className="nav-links">
-            <Link href="/" className="nav-item">Početna</Link>
-            <Link href="/recepti" className="nav-item">Recepti</Link>
-            <Link href="/o-meni" className="nav-item">O Meni</Link>
-            <Link href="#" className="nav-item">YouTube</Link>
-            <Link href="/kontakt" className="nav-item">Kontakt</Link>
+            {/* Right nav links */}
+            <nav className="mk-nav-right">
+              <Link href="#o-meni" className="mk-nav-link">O Meni</Link>
+              <Link href="#trending" className="mk-nav-link">Trending</Link>
+            </nav>
           </div>
-        </nav>
-        
+        </header>
+
+        {/* ─── PAGE CONTENT ─── */}
         {children}
 
-        {/* New Footer */}
-        <footer className="footer">
-          <div className="logo-container" style={{justifyContent: 'center'}}>
-            <Image 
-              src="/logo2.png" 
-              alt="Moj Kutak Logo" 
-              width={180} 
-              height={60} 
-              style={{ objectFit: 'contain' }}
-            />
+        {/* ─── FOOTER ─── */}
+        <footer className="mk-footer-wrapper">
+          {/* Wavy SVG top border */}
+          <div className="mk-footer-wave">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 1440 80"
+              preserveAspectRatio="none"
+              style={{ display: "block", width: "100%", height: "80px" }}
+            >
+              <path
+                d="M0,40 C180,80 360,0 540,40 C720,80 900,0 1080,40 C1260,80 1350,20 1440,40 L1440,80 L0,80 Z"
+                fill="#C8E6F5"
+              />
+            </svg>
           </div>
-          <div className="social-icons">
-            <span className="social-circle">▶️</span>
-            <span className="social-circle">📘</span>
-            <span className="social-circle">📸</span>
-            <span className="social-circle">📌</span>
-            <span className="social-circle">🎵</span>
+
+          <div className="mk-footer-inner">
+            {/* Logo */}
+            <Link href="/" style={{ display: "inline-block", marginBottom: "28px" }}>
+              <Image
+                src="/logo2.png"
+                alt="Moj Kutak"
+                width={110}
+                height={110}
+                style={{ objectFit: "contain", margin: "0 auto" }}
+              />
+            </Link>
+
+            {/* Nav links */}
+            <div className="mk-footer-links">
+              {["Početna", "Recepti", "O Meni", "Trending", "Kontakt"].map(
+                (item) => (
+                  <Link key={item} href="#" className="mk-footer-link">
+                    {item}
+                  </Link>
+                )
+              )}
+            </div>
+
+            {/* Social icons */}
+            <div className="mk-footer-socials">
+              {/* Instagram */}
+              <button className="mk-social-btn" aria-label="Instagram">
+                📸
+              </button>
+              {/* YouTube */}
+              <button className="mk-social-btn" aria-label="YouTube">
+                ▶️
+              </button>
+              {/* Pinterest */}
+              <button className="mk-social-btn" aria-label="Pinterest">
+                📌
+              </button>
+              {/* TikTok */}
+              <button className="mk-social-btn" aria-label="TikTok">
+                🎵
+              </button>
+            </div>
+
+            {/* Newsletter — Client Component to allow event handlers */}
+            <NewsletterForm />
+
+            {/* Copyright */}
+            <p className="mk-footer-copy">
+              © {new Date().getFullYear()} Moj Kutak. Sva prava pridržana.
+            </p>
           </div>
-          <p style={{ color: "var(--text-medium)", fontSize: "14px" }}>
-            © {new Date().getFullYear()} Moj Kutak. Sva prava pridržana.
-          </p>
         </footer>
       </body>
     </html>
