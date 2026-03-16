@@ -237,7 +237,7 @@ export default function Home() {
         <div className="mk-recipes-grid">
           {recipes.map((r, i) => {
             // Per-card polaroid tilt angles and float delays
-            const rotations  = [-2, 1.5, -1];
+            const rotations = [-2, 1.5, -1];
             const floatDelay = [0, 0.8, 1.5];
             return (
               /* Outer wrapper handles the scroll-reveal; inner card handles tilt+float */
@@ -422,7 +422,7 @@ export default function Home() {
           </div>
 
           <h2 className="mk-about-title">
-            Zdravo, ja sam <span>Ana!</span>
+            Zdravo, ja sam <span>Ismira!</span>
           </h2>
 
           <p className="mk-about-bio">

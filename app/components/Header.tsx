@@ -21,7 +21,7 @@ const nunito = Nunito({
 
 const links = [
   { label: 'Početna', href: '/' },
-  { label: 'Recepti', href: '/katalog' },
+  { label: 'Recepti', href: '/recepti' },
   { label: 'O Meni', href: '/kontakt' },
   { label: 'Trending', href: '/trending' },
 ] as const;
