@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './recepti.module.css';
@@ -188,6 +189,14 @@ export default function ReceptiPage() {
   const sugTimeout = useRef<NodeJS.Timeout | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
+  const [sugPos, setSugPos] = useState({ top: 0, left: 0, width: 0 });
+  const searchRingRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Filter logic
   const filteredRecepti = useMemo(() => {
     return RECEPTI.filter((r) => {
@@ -257,6 +266,14 @@ export default function ReceptiPage() {
   }
 
   function openSug() {
+    if (searchRingRef.current) {
+      const rect = searchRingRef.current.getBoundingClientRect();
+      setSugPos({
+        top: rect.bottom + window.scrollY + 10,
+        left: rect.left + window.scrollX,
+        width: rect.width,
+      });
+    }
     if (sugTimeout.current) clearTimeout(sugTimeout.current);
     setSuggestionsOpen(true);
   }
@@ -303,7 +320,7 @@ export default function ReceptiPage() {
           <span className={styles.bubble4} />
 
           <div className={styles.searchTrack}>
-            <div className={`${styles.searchRing} ${suggestionsOpen ? styles.searchRingFocus : ''}`}>
+            <div ref={searchRingRef} className={`${styles.searchRing} ${suggestionsOpen ? styles.searchRingFocus : ''}`}>
               <div className={styles.searchInner}>
                 <div className={styles.searchIconWrap}>
                   <div className={`${styles.searchIconBg} ${suggestionsOpen ? styles.searchIconBgVisible : ''}`} />
@@ -341,41 +358,6 @@ export default function ReceptiPage() {
                 <button className={styles.searchBtn} type="button">
                   Traži
                 </button>
-              </div>
-            </div>
-
-            {/* Suggestions dropdown */}
-            <div className={`${styles.suggestions} ${suggestionsOpen ? styles.suggestionsOpen : ''}`}>
-              <div className={styles.sugLabel}>Popularni recepti</div>
-              {[
-                { e: '🥧', n: 'Pita sa sirom', sub: 'Pite · 60 min' },
-                { e: '🍩', n: 'Krofne sa pekmezom', sub: 'Deserti · 80 min' },
-                { e: '🍲', n: 'Begova čorba', sub: 'Lonci · 90 min' },
-              ].map((s) => (
-                <div
-                  key={s.n}
-                  className={styles.sugItem}
-                  onMouseDown={() => pickSuggestion(s.n)}
-                >
-                  <div className={styles.sugIcon}>{s.e}</div>
-                  <div>
-                    <div className={styles.sugNaziv}>{s.n}</div>
-                    <div className={styles.sugSub}>{s.sub}</div>
-                  </div>
-                </div>
-              ))}
-              <div className={styles.sugDivider} />
-              <div className={styles.sugLabel}>Brza pretraga po tagovima</div>
-              <div className={styles.sugTags}>
-                {['⚡ Brzo', '🌙 Ramazan', '🇧🇦 Bosanski', '💚 Zdravo', '👵 Bakino'].map((t) => (
-                  <span
-                    key={t}
-                    className={styles.sugTag}
-                    onMouseDown={() => pickSuggestion(t.split(' ')[1]?.toLowerCase() || t)}
-                  >
-                    {t}
-                  </span>
-                ))}
               </div>
             </div>
           </div>
@@ -543,6 +525,66 @@ export default function ReceptiPage() {
         </div>
 
       </div>
+
+      {mounted && suggestionsOpen && createPortal(
+        <div
+          style={{
+            position: 'absolute',
+            top: sugPos.top,
+            left: sugPos.left,
+            width: sugPos.width,
+            zIndex: 99999,
+            background: 'rgba(255,253,245,0.97)',
+            backdropFilter: 'blur(20px)',
+            borderRadius: '22px',
+            border: '2px solid rgba(110,185,220,0.25)',
+            boxShadow: '0 16px 48px rgba(42,111,154,0.14)',
+            overflow: 'hidden',
+            fontFamily: 'Nunito, sans-serif',
+          }}
+        >
+          <div style={{ fontSize:'0.67rem', fontWeight:700, letterSpacing:'0.08em', color:'#3a8bc0', padding:'12px 18px 6px', textTransform:'uppercase' }}>
+            Popularni recepti
+          </div>
+          {[
+            { e: '🥧', n: 'Pita sa sirom',      sub: 'Pite · 60 min'     },
+            { e: '🍩', n: 'Krofne sa pekmezom', sub: 'Deserti · 80 min'  },
+            { e: '🍲', n: 'Begova čorba',       sub: 'Lonci · 90 min'    },
+          ].map((s) => (
+            <div
+              key={s.n}
+              onMouseDown={() => pickSuggestion(s.n)}
+              style={{ display:'flex', alignItems:'center', gap:12, padding:'9px 18px', cursor:'pointer', fontSize:'0.88rem', color:'#3d2b1f' }}
+              onMouseEnter={e => (e.currentTarget.style.background='rgba(110,185,220,0.1)')}
+              onMouseLeave={e => (e.currentTarget.style.background='transparent')}
+            >
+              <div style={{ width:32, height:32, borderRadius:'50%', background:'#e4f3fb', display:'flex', alignItems:'center', justifyContent:'center', fontSize:14, flexShrink:0 }}>
+                {s.e}
+              </div>
+              <div>
+                <div style={{ fontWeight:700, color:'#1a3e5c' }}>{s.n}</div>
+                <div style={{ fontSize:'0.73rem', color:'#7a5c4f' }}>{s.sub}</div>
+              </div>
+            </div>
+          ))}
+          <div style={{ height:1, background:'rgba(110,185,220,0.15)', margin:'4px 14px' }} />
+          <div style={{ fontSize:'0.67rem', fontWeight:700, letterSpacing:'0.08em', color:'#3a8bc0', padding:'12px 18px 6px', textTransform:'uppercase' }}>
+            Brza pretraga po tagovima
+          </div>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:6, padding:'8px 18px 13px' }}>
+            {['⚡ Brzo','🌙 Ramazan','🇧🇦 Bosanski','💚 Zdravo','👵 Bakino'].map((t) => (
+              <span
+                key={t}
+                onMouseDown={() => pickSuggestion(t.split(' ').slice(1).join(' ').toLowerCase())}
+                style={{ background:'rgba(110,185,220,0.12)', border:'1.5px solid rgba(110,185,220,0.28)', color:'#2a6f9a', fontSize:'0.74rem', fontWeight:700, padding:'4px 12px', borderRadius:'999px', cursor:'pointer' }}
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>,
+        document.body
+      )}
     </main>
   );
 }
