@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { Playlist, PostSummary } from "@/lib/types";
@@ -8,15 +8,18 @@ import { brojRecepata, tagLabel } from "@/lib/format";
 import { AD_SLOTS } from "@/lib/ads";
 import AdSlot from "@/app/components/AdSlot";
 import RecipeCard from "@/app/components/RecipeCard";
-import { CloseIcon, SearchIcon } from "@/app/components/Icons";
+import { CalendarIcon, CloseIcon, EyeIcon, HeartIcon, SearchIcon } from "@/app/components/Icons";
+import { focusPretraga, PRETRAGA_ID } from "@/lib/pretraga";
+import TagPicker from "./TagPicker";
 import styles from "./recepti.module.css";
 
 type Sort = "novo" | "popularno" | "lajkovi";
 
-const SORTS: { id: Sort; label: string }[] = [
-  { id: "novo", label: "Najnovije" },
-  { id: "popularno", label: "Najgledanije" },
-  { id: "lajkovi", label: "Najviše lajkova" },
+// `short` se prikazuje na uskim ekranima da sve tri opcije stanu u jedan red.
+const SORTS: { id: Sort; label: string; short: string; Icon: typeof EyeIcon }[] = [
+  { id: "novo", label: "Najnovije", short: "Novo", Icon: CalendarIcon },
+  { id: "popularno", label: "Najgledanije", short: "Pregledi", Icon: EyeIcon },
+  { id: "lajkovi", label: "Najviše lajkova", short: "Lajkovi", Icon: HeartIcon },
 ];
 
 const PAGE = 24;
@@ -42,6 +45,15 @@ export default function ReceptiBrowser({ posts, playlists }: { posts: PostSummar
 
   const [q, setQ] = useState("");
   const [limit, setLimit] = useState(PAGE);
+  const results = useRef<HTMLDivElement>(null);
+
+  // Dolazak preko lupe u headeru (/recepti#pretraga): polje se renderuje tek u browseru,
+  // pa browser ne može sam skrolati do njega — uradi to nakon prvog iscrtavanja.
+  useEffect(() => {
+    if (window.location.hash !== `#${PRETRAGA_ID}`) return;
+    const raf = requestAnimationFrame(() => focusPretraga());
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   function setParam(key: string, value: string | null) {
     const next = new URLSearchParams(params.toString());
@@ -52,16 +64,12 @@ export default function ReceptiBrowser({ posts, playlists }: { posts: PostSummar
     setLimit(PAGE);
   }
 
-  // Tagovi iz stvarnih recepata, najčešći prvi. Tagovi s jednim receptom se ne nude kao filter
-  // (ima ih previše), ali rade kroz link s recepta i kroz pretragu.
+  // Svi tagovi iz stvarnih recepata s brojem recepata, najčešći prvi (pa abecedno).
   const tags = useMemo(() => {
     const count = new Map<string, number>();
     posts.forEach((p) => p.tags.forEach((t) => count.set(t, (count.get(t) ?? 0) + 1)));
-    return [...count.entries()]
-      .filter(([t, n]) => n >= 2 || t === tag)
-      .sort((a, b) => b[1] - a[1])
-      .map(([t]) => t);
-  }, [posts, tag]);
+    return [...count.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  }, [posts]);
 
   const activePlaylist = playlists.find((pl) => pl.slug === playlistSlug) ?? null;
 
@@ -102,7 +110,11 @@ export default function ReceptiBrowser({ posts, playlists }: { posts: PostSummar
                   type="button"
                   className={styles.plCard}
                   aria-pressed={active}
-                  onClick={() => setParam("playlist", active ? null : pl.slug)}
+                  onClick={() => {
+                    setParam("playlist", active ? null : pl.slug);
+                    // Odabrana playlista: skrolaj do njenih recepata ispod.
+                    if (!active) results.current?.scrollIntoView({ block: "start" });
+                  }}
                 >
                   <span className={styles.plThumb}>
                     {pl.thumbnail_url && (
@@ -123,7 +135,7 @@ export default function ReceptiBrowser({ posts, playlists }: { posts: PostSummar
           <SearchIcon size={18} />
           <span className="sr-only">Pretraži recepte</span>
           <input
-            id="pretraga"
+            id={PRETRAGA_ID}
             type="search"
             placeholder="Pretraži, npr. pita, čorba, kolač…"
             value={q}
@@ -139,39 +151,39 @@ export default function ReceptiBrowser({ posts, playlists }: { posts: PostSummar
           )}
         </label>
 
-        <label className={styles.sort}>
-          <span>Sortiraj:</span>
-          <select value={sort} onChange={(e) => setParam("sort", e.target.value === "novo" ? null : e.target.value)}>
-            {SORTS.map((s) => (
-              <option key={s.id} value={s.id}>{s.label}</option>
-            ))}
-          </select>
-        </label>
-      </div>
+        {tags.length > 0 && (
+          <TagPicker tags={tags} value={tag} onChange={(t) => setParam("tag", t)} norm={norm} />
+        )}
 
-      {tags.length > 0 && (
-        <div className={styles.tags} role="group" aria-label="Filtriraj po tagu">
-          <button type="button" className="chip" aria-pressed={!tag} onClick={() => setParam("tag", null)}>
-            Sve
-          </button>
-          {tags.map((t) => (
+        <div className={styles.sort} role="radiogroup" aria-label="Sortiraj recepte">
+          {SORTS.map(({ id, label, short, Icon }) => (
             <button
-              key={t}
+              key={id}
               type="button"
-              className="chip"
-              aria-pressed={tag === t}
-              onClick={() => setParam("tag", tag === t ? null : t)}
+              role="radio"
+              aria-checked={sort === id}
+              className={styles.sortBtn}
+              onClick={() => setParam("sort", id === "novo" ? null : id)}
             >
-              {tagLabel(t)}
+              <Icon size={16} />
+              <span className={styles.sortLong}>{label}</span>
+              <span className={styles.sortShort} aria-hidden="true">{short}</span>
             </button>
           ))}
         </div>
-      )}
+      </div>
 
-      <div className={styles.resultBar} aria-live="polite">
-        <span>
+      <div className={styles.resultBar} aria-live="polite" ref={results}>
+        <span className={styles.resultInfo}>
           {activePlaylist ? `Playlista „${activePlaylist.title}“ · ` : ""}
           {brojRecepata(filtered.length)}
+          {tag && (
+            <button type="button" className={styles.activeTag} onClick={() => setParam("tag", null)}>
+              {tagLabel(tag)}
+              <CloseIcon size={14} />
+              <span className="sr-only">Ukloni kategoriju</span>
+            </button>
+          )}
         </span>
         {hasFilters && (
           <button

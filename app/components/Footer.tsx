@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
-import { InstagramIcon, MailIcon, TiktokIcon, YoutubeIcon } from "./Icons";
+import { FacebookIcon, InstagramIcon, MailIcon, TiktokIcon, YoutubeIcon } from "./Icons";
 import styles from "./Footer.module.css";
 
 const stranice = [
@@ -14,7 +14,14 @@ const stranice = [
 const drustvene = [
   { label: "YouTube", href: SITE.youtube, Icon: YoutubeIcon },
   { label: "Instagram", href: SITE.instagram, Icon: InstagramIcon },
+  { label: "Facebook", href: SITE.facebook, Icon: FacebookIcon },
   { label: "TikTok", href: SITE.tiktok, Icon: TiktokIcon },
+];
+
+const josKanala = [
+  { label: "YouTube: Kuhinja Recepti", href: SITE.youtubeKuhinja },
+  { label: "Pletivo na YouTubeu", href: SITE.youtubePletivo },
+  { label: `Pletenje na Instagramu`, href: SITE.instagramPletenje },
 ];
 
 export default function Footer() {
@@ -43,6 +50,13 @@ export default function Footer() {
           <h2>Stranice</h2>
           {stranice.map(({ label, href }) => (
             <Link key={href} href={href}>{label}</Link>
+          ))}
+        </nav>
+
+        <nav className={styles.col} aria-label="Još kanala">
+          <h2>Još kanala</h2>
+          {josKanala.map(({ label, href }) => (
+            <a key={href} href={href} target="_blank" rel="noopener noreferrer">{label}</a>
           ))}
         </nav>
 

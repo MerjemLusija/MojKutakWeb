@@ -87,11 +87,13 @@
 
 .yt .channelIcon { background: var(--yt); }
 .ig .channelIcon { background: linear-gradient(45deg, #f09433, #dc2743 50%, #bc1888); }
+.fb .channelIcon { background: #1877f2; }
 .tt .channelIcon { background: #111; }
 .mail .channelIcon { background: var(--brand); }
 
 .yt:hover { border-color: var(--yt); }
 .ig:hover { border-color: #dc2743; }
+.fb:hover { border-color: #1877f2; }
 .tt:hover { border-color: #111; }
 .mail:hover { border-color: var(--brand); }
 

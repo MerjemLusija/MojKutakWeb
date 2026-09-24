@@ -108,32 +108,178 @@
   color: var(--ink-soft);
 }
 
-.sort {
+/* ── Kategorije: dugme + padajući panel s pretragom ── */
+.picker { position: relative; flex: 0 1 240px; }
+
+.pickerBtn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.92rem;
-  color: var(--ink-soft);
-}
-
-.sort select {
+  gap: 10px;
+  width: 100%;
   min-height: 48px;
-  padding: 0 14px;
+  padding: 0 14px 0 16px;
   border: 1.5px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  text-align: left;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.pickerBtn:hover,
+.pickerBtn[aria-expanded="true"] { border-color: var(--brand); color: var(--ink); }
+
+.pickerBtn[data-selected] {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+  color: var(--brand-hover);
+  font-weight: 600;
+}
+
+.pickerValue { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.chevron { flex-shrink: 0; transition: transform 0.2s; }
+.pickerBtn[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+
+.popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 20;
+  width: max(100%, 280px);
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-hover);
+  animation: pop 0.14s ease-out;
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(-4px); }
+}
+
+.popSearch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  margin-bottom: 6px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-alt);
+  color: var(--ink-muted);
+}
+
+.popSearch input {
+  flex: 1;
+  min-width: 0;
+  min-height: 42px;
+  border: 0;
+  outline: 0;
+  background: transparent;
   font: inherit;
   font-size: 1rem;
   color: var(--ink);
 }
 
-/* ── Tagovi: na mobitelu jedan red koji se skrola ── */
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
+.options {
+  max-height: min(320px, 50vh);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+
+.option[data-active] { background: var(--surface-alt); color: var(--ink); }
+.option[aria-selected="true"] { color: var(--brand); font-weight: 600; }
+
+.check { display: grid; place-items: center; width: 16px; flex-shrink: 0; }
+.optionLabel { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.optionCount {
+  min-width: 26px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--surface-alt);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+  color: var(--ink-muted);
+}
+
+.option[data-active] .optionCount { background: var(--surface); }
+
+.noOption { padding: 12px 10px; font-size: 0.92rem; color: var(--ink-muted); }
+
+/* ── Sortiranje: segmentirani prekidač umjesto <select> ── */
+.sort {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.sortBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.sortBtn:hover { color: var(--ink); background: var(--surface-alt); }
+
+.sortBtn[aria-checked="true"] {
+  background: var(--ink);
+  color: #fff;
+}
+
+.sortShort { display: none; }
+
+.resultInfo { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+
+.activeTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 10px 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--brand-hover);
+}
+
+.activeTag:hover { background: var(--brand); color: #fff; }
 
 .resultBar {
   display: flex;
@@ -176,15 +322,18 @@
   .page { padding-top: 24px; }
   .plRow { grid-auto-columns: 160px; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
 
-  .tags {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    margin-inline: calc(var(--gutter) * -1);
-    padding-inline: var(--gutter);
-    padding-bottom: 4px;
-    scrollbar-width: none;
-  }
+  .picker { flex: 1 1 100%; }
+  .popover { left: 0; right: 0; width: auto; }
 
   .sort { width: 100%; }
-  .sort select { flex: 1; }
+  .sortBtn { flex: 1; padding: 0 8px; }
+  .sortLong {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .sortShort { display: inline; }
 }

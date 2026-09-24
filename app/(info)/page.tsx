@@ -7,8 +7,9 @@ import { SITE } from "@/lib/site";
 import { excerpt } from "@/lib/text";
 import RecipeCard from "@/app/components/RecipeCard";
 import YouTubeEmbed from "@/app/components/YouTubeEmbed";
-import { ArrowRightIcon, InstagramIcon, YoutubeIcon } from "@/app/components/Icons";
+import { ArrowRightIcon, FacebookIcon, InstagramIcon, TiktokIcon, YoutubeIcon } from "@/app/components/Icons";
 import styles from "./home.module.css";
+import Backdrop from "@/app/components/Backdrop";
 
 export const revalidate = 60;
 
@@ -27,6 +28,7 @@ export default async function HomePage() {
 
   return (
     <main>
+      <Backdrop />
       {/* ── Hero ── */}
       <section className={`container ${styles.hero}`}>
         <div className={styles.heroText}>
@@ -160,10 +162,19 @@ export default async function HomePage() {
             <span className="eyebrow">Ko kuha</span>
             <h2>Zdravo, ja sam {SITE.author}.</h2>
             <p>{SITE.authorBio}</p>
-            <div className={styles.heroActions}>
+            <div className={styles.aboutActions}>
               <Link href="/o-meni" className="btn btn-outline">Više o meni</Link>
-              <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
-                <InstagramIcon size={18} /> {SITE.instagramHandle}
+              <a href={SITE.youtube} target="_blank" rel="noopener noreferrer" className="btn btn-yt">
+                <YoutubeIcon size={18} /> YouTube
+              </a>
+              <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-ig">
+                <InstagramIcon size={18} /> Instagram
+              </a>
+              <a href={SITE.tiktok} target="_blank" rel="noopener noreferrer" className="btn btn-tt">
+                <TiktokIcon size={18} /> TikTok
+              </a>
+              <a href={SITE.facebook} target="_blank" rel="noopener noreferrer" className="btn btn-fb">
+                <FacebookIcon size={18} /> Facebook
               </a>
             </div>
           </div>

@@ -28,6 +28,7 @@
 .bio { margin-top: 14px; color: var(--ink-soft); line-height: 1.6; }
 
 .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.linksMore { margin-top: 8px; }
 
 .more {
   display: inline-block;

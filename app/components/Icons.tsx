@@ -96,3 +96,21 @@ export const TiktokIcon = (p: P) => (
     <path d="M16.6 3c.4 2.2 1.8 3.7 4 3.9v3.2a7.5 7.5 0 0 1-4-1.2v6.2A6 6 0 1 1 10.5 9v3.3a2.8 2.8 0 1 0 2.9 2.8V3h3.2Z" />
   </Svg>
 );
+
+export const FacebookIcon = (p: P) => (
+  <Svg {...p} fill="currentColor" stroke="none">
+    <path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4a21 21 0 0 0-2.3-.1c-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1Z" />
+  </Svg>
+);
+
+export const ChevronDownIcon = (p: P) => (
+  <Svg {...p}><path d="m6 9 6 6 6-6" /></Svg>
+);
+
+export const CheckIcon = (p: P) => (
+  <Svg {...p}><path d="m5 12.5 4.5 4.5L19 7.5" /></Svg>
+);
+
+export const TagIcon = (p: P) => (
+  <Svg {...p}><path d="M3 12.2V4a1 1 0 0 1 1-1h8.2a1 1 0 0 1 .7.3l7.8 7.8a1 1 0 0 1 0 1.4l-8.2 8.2a1 1 0 0 1-1.4 0l-7.8-7.8a1 1 0 0 1-.3-.7Z" /><circle cx="7.5" cy="7.5" r="1.5" /></Svg>
+);

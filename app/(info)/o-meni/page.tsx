@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
-import { InstagramIcon, MailIcon, TiktokIcon, YoutubeIcon } from "@/app/components/Icons";
+import { FacebookIcon, InstagramIcon, MailIcon, TiktokIcon, YoutubeIcon } from "@/app/components/Icons";
 import styles from "./o-meni.module.css";
+import Backdrop from "@/app/components/Backdrop";
 
 export const metadata: Metadata = {
   title: "O meni",
@@ -14,15 +15,20 @@ export const metadata: Metadata = {
 // PROVJERI: tekst priče je preuzet sa stare stranice — prilagodi ga svojim riječima.
 
 const kanali = [
-  { naziv: "YouTube", opis: "Video recepti svake sedmice", href: SITE.youtube, Icon: YoutubeIcon, cls: styles.yt },
+  { naziv: "YouTube — Moj Kutak", opis: "Video recepti svake sedmice", href: SITE.youtube, Icon: YoutubeIcon, cls: styles.yt },
+  { naziv: "YouTube — Kuhinja Recepti", opis: "Još recepata na drugom kanalu", href: SITE.youtubeKuhinja, Icon: YoutubeIcon, cls: styles.yt },
   { naziv: "Instagram", opis: SITE.instagramHandle, href: SITE.instagram, Icon: InstagramIcon, cls: styles.ig },
-  { naziv: "TikTok", opis: "Kratki recepti", href: SITE.tiktok, Icon: TiktokIcon, cls: styles.tt },
+  { naziv: "Facebook", opis: "Moj Kutak recepti", href: SITE.facebook, Icon: FacebookIcon, cls: styles.fb },
+  { naziv: "TikTok", opis: SITE.tiktokHandle, href: SITE.tiktok, Icon: TiktokIcon, cls: styles.tt },
+  { naziv: "Pletivo — YouTube", opis: "Playlista pletenja", href: SITE.youtubePletivo, Icon: YoutubeIcon, cls: styles.yt },
+  { naziv: "Pletenje — Instagram", opis: SITE.instagramPletenjeHandle, href: SITE.instagramPletenje, Icon: InstagramIcon, cls: styles.ig },
   { naziv: "Email", opis: SITE.email, href: `mailto:${SITE.email}`, Icon: MailIcon, cls: styles.mail },
 ];
 
 export default function OMeniPage() {
   return (
     <main className={`container ${styles.page}`}>
+      <Backdrop />
       <section className={styles.hero}>
         <div className={styles.photo}>
           {/* Zamijeni pravom fotografijom: stavi npr. public/ismira.jpg i promijeni src */}

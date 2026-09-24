@@ -16,7 +16,7 @@ import RecipeCard from "@/app/components/RecipeCard";
 import RecipeContent from "@/app/components/RecipeContent";
 import ViewTracker from "@/app/components/ViewTracker";
 import YouTubeEmbed from "@/app/components/YouTubeEmbed";
-import { CalendarIcon, EyeIcon, InstagramIcon, ListIcon } from "@/app/components/Icons";
+import { CalendarIcon, EyeIcon, FacebookIcon, InstagramIcon, ListIcon, TiktokIcon } from "@/app/components/Icons";
 import styles from "./recept.module.css";
 
 // Stranica se kešira i osvježava najviše jednom u minuti
@@ -170,14 +170,22 @@ export default async function ReceptPage({ params }: Params) {
               <div>
                 <h2>Kako vam je uspjelo?</h2>
                 <p>
-                  Kliknite srce ako vam se recept svidio, a sliku svog jela podijelite na
-                  Instagramu i označite <strong>{SITE.instagramHandle}</strong>.
+                  Kliknite srce ako vam se recept svidio, a sliku ili video svog jela podijelite
+                  na Instagramu (<strong>{SITE.instagramHandle}</strong>), TikToku
+                  (<strong>{SITE.tiktokHandle}</strong>) ili Facebooku (<strong>Moj Kutak recepti</strong>)
+                  i označite me — rado ću ga pogledati.
                 </p>
               </div>
               <div className={styles.ctaActions}>
                 <LikeButton postId={post.id} initialCount={post.stats.total_likes} size="lg" />
-                <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+                <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-ig">
                   <InstagramIcon size={18} /> Instagram
+                </a>
+                <a href={SITE.tiktok} target="_blank" rel="noopener noreferrer" className="btn btn-tt">
+                  <TiktokIcon size={18} /> TikTok
+                </a>
+                <a href={SITE.facebook} target="_blank" rel="noopener noreferrer" className="btn btn-fb">
+                  <FacebookIcon size={18} /> Facebook
                 </a>
               </div>
             </section>

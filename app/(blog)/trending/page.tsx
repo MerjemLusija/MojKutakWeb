@@ -3,6 +3,7 @@ import { getPosts, getTrending } from "@/lib/data";
 import type { TrendingPost } from "@/lib/types";
 import TrendingBoard from "./TrendingBoard";
 import styles from "./trending.module.css";
+import Backdrop from "@/app/components/Backdrop";
 
 // Rang lista se osvježava svakih 5 minuta
 export const revalidate = 300;
@@ -28,6 +29,7 @@ export default async function TrendingPage() {
 
   return (
     <main className={`container ${styles.page}`}>
+      <Backdrop />
       <header className={styles.head}>
         <span className="eyebrow">Trending</span>
         <h1>Šta se najviše kuha</h1>

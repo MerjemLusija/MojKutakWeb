@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { focusPretraga, PRETRAGA_ID } from "@/lib/pretraga";
 import { CloseIcon, MenuIcon, SearchIcon } from "./Icons";
 import styles from "./Header.module.css";
 
@@ -53,7 +54,16 @@ export default function Header() {
         </nav>
 
         <div className={styles.actions}>
-          <Link href="/recepti#pretraga" className={styles.iconBtn} aria-label="Pretraži recepte" onClick={close}>
+          <Link
+            href={`/recepti#${PRETRAGA_ID}`}
+            className={styles.iconBtn}
+            aria-label="Pretraži recepte"
+            onClick={(e) => {
+              close();
+              // Već smo na /recepti: samo skrolaj i fokusiraj (klik na isti #hash inače ne radi ništa).
+              if (focusPretraga()) e.preventDefault();
+            }}
+          >
             <SearchIcon />
           </Link>
           <button

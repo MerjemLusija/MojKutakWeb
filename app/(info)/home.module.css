@@ -183,6 +183,8 @@
 
 .about h2 { margin-top: 8px; font-size: clamp(1.5rem, 3vw, 2rem); }
 .about p { margin-top: 10px; max-width: 60ch; color: var(--ink-soft); }
+.aboutActions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.aboutActions :global(.btn) { padding-inline: 16px; }
 
 /* ── Tablet ── */
 @media (max-width: 900px) {
