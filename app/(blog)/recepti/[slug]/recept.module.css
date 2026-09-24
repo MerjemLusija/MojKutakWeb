@@ -1,0 +1,153 @@
+.page { padding-top: 32px; }
+
+/* ── Zaglavlje ── */
+.head { max-width: 780px; }
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink-muted);
+}
+
+.crumbs a:hover { color: var(--brand); }
+
+.title {
+  margin-top: 12px;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.08;
+}
+
+.lead {
+  margin-top: 14px;
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  white-space: pre-line;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 18px;
+  font-size: 0.92rem;
+  color: var(--ink-muted);
+}
+
+.metaItem { display: inline-flex; align-items: center; gap: 6px; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ── Glavni raspored: tekst + sidebar ── */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 48px;
+  margin-top: 28px;
+}
+
+.main { min-width: 0; max-width: 780px; }
+
+.cover {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface-alt);
+}
+
+.coverImg { object-fit: cover; }
+
+.ad { margin-block: 32px; }
+
+.block { margin-top: 40px; }
+
+.blockTitle { font-size: 1.5rem; margin-bottom: 16px; }
+
+/* ── Poziv na akciju ── */
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 48px;
+  padding: 28px;
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+}
+
+.cta h2 { font-size: 1.4rem; }
+.cta p { margin-top: 6px; max-width: 46ch; color: var(--ink-soft); }
+
+.ctaActions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+
+.playlists { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+
+.playlists a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-weight: 600;
+  transition: border-color 0.15s;
+}
+
+.playlists a:hover { border-color: var(--brand); }
+.playlists svg { color: var(--brand); }
+
+.plCount { margin-left: auto; font-size: 0.85rem; font-weight: 500; color: var(--ink-muted); }
+
+/* ── Sidebar ── */
+.sidebar { display: flex; flex-direction: column; gap: 24px; }
+
+.sticky { position: sticky; top: calc(var(--header-h) + 24px); }
+
+.authorMobile { display: none; margin-top: 40px; }
+
+/* ── Povezani recepti ── */
+.related { margin-top: 72px; }
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* ── Tablet i mobitel ── */
+@media (max-width: 1023px) {
+  .layout { grid-template-columns: 1fr; gap: 0; }
+  .main { max-width: none; }
+  .sidebar { display: none; }
+  .authorMobile { display: block; }
+  .relatedGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .page { padding-top: 20px; }
+  .cover { margin-inline: calc(var(--gutter) * -1); border-radius: 0; }
+  .cta { padding: 22px; }
+  .relatedGrid { grid-template-columns: 1fr; }
+}
+
+/* ── Print: samo recept ── */
+@media print {
+  .actions, .ad, .cta, .tags, .playlists, .sidebar, .authorMobile, .related, .crumbs { display: none !important; }
+  .layout { display: block; }
+  .cover { max-height: 300px; }
+}

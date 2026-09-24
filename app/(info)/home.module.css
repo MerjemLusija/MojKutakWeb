@@ -1,0 +1,206 @@
+.img { object-fit: cover; }
+
+/* ── Hero ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  align-items: center;
+  gap: 56px;
+  padding-block: 56px 32px;
+}
+
+.heroText h1 {
+  margin-top: 14px;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  line-height: 1.05;
+}
+
+.heroText p {
+  margin-top: 18px;
+  max-width: 46ch;
+  font-size: 1.12rem;
+  color: var(--ink-soft);
+}
+
+.heroActions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+
+.featured {
+  display: block;
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.featured:hover { box-shadow: var(--shadow-hover); }
+
+.featuredMedia {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: var(--surface-alt);
+}
+
+.featuredBody { padding: 20px 24px 24px; }
+
+.featuredBody h2 { margin-top: 10px; font-size: 1.6rem; }
+.featuredBody p { margin-top: 8px; color: var(--ink-soft); }
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+/* ── Sekcije ── */
+.section { margin-top: 72px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 24px;
+}
+
+/* ── Playliste ── */
+.playlists {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: 16px;
+}
+
+.plCard {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--brand);
+}
+
+.plShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.65), rgb(0 0 0 / 0) 60%);
+}
+
+.plText {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  color: #fff;
+}
+
+.plText strong { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; }
+.plText span { font-size: 0.88rem; opacity: 0.9; }
+
+.plCard .img { transition: transform 0.4s; }
+.plCard:hover .img { transform: scale(1.04); }
+
+/* ── Video ── */
+.videoBand {
+  margin-top: 80px;
+  padding-block: 64px;
+  background: var(--brand-soft);
+}
+
+.videoInner {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  align-items: center;
+  gap: 48px;
+}
+
+.videoText h2 { margin-top: 10px; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.videoText p { margin-top: 12px; color: var(--ink-soft); }
+
+/* ── Popularno ── */
+.popular {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.popularItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 100%;
+  padding: 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: border-color 0.15s;
+}
+
+.popularItem:hover { border-color: var(--brand); }
+
+.popularRank {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.popularTag {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.popularTitle {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* ── O meni ── */
+.about {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 40px;
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.aboutImg { flex-shrink: 0; width: 120px; height: 120px; border-radius: 999px; object-fit: cover; }
+
+.about h2 { margin-top: 8px; font-size: clamp(1.5rem, 3vw, 2rem); }
+.about p { margin-top: 10px; max-width: 60ch; color: var(--ink-soft); }
+
+/* ── Tablet ── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 32px; }
+  .videoInner { grid-template-columns: 1fr; gap: 28px; }
+  .videoFrame { order: -1; }
+  .popular { grid-template-columns: 1fr; }
+}
+
+/* ── Mobitel ── */
+@media (max-width: 640px) {
+  .section { margin-top: 56px; }
+  .heroText p { font-size: 1.02rem; }
+  .featuredBody { padding: 16px 18px 20px; }
+  .featuredBody h2 { font-size: 1.35rem; }
+  .videoBand { margin-top: 56px; padding-block: 40px; }
+  .about { flex-direction: column; align-items: flex-start; padding: 24px; gap: 20px; }
+  .aboutImg { width: 88px; height: 88px; }
+  .playlists { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .plText strong { font-size: 1.05rem; }
+}

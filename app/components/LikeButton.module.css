@@ -1,0 +1,32 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 600;
+  transition: border-color 0.15s, background-color 0.15s, color 0.15s;
+}
+
+.btn:hover { border-color: var(--danger); color: var(--danger); }
+
+.btn[aria-pressed="true"] {
+  border-color: var(--danger);
+  background: #fdecea;
+  color: var(--danger);
+}
+
+.btn[aria-pressed="true"] svg { animation: pop 0.3s ease; }
+
+.sm { font-size: 0.95rem; }
+.lg { padding: 12px 22px; font-size: 1.05rem; }
+
+.label { font-weight: 500; }
+
+@keyframes pop {
+  50% { transform: scale(1.25); }
+}
